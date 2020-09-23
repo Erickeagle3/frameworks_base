@@ -347,6 +347,7 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     private final VolumeComponent mVolumeComponent;
     private BrightnessMirrorController mBrightnessMirrorController;
+    private BrightnessMirrorController mQuickBrightnessMirrorController;
     private boolean mBrightnessMirrorVisible;
     private BiometricUnlockController mBiometricUnlockController;
     private final LightBarController mLightBarController;
@@ -1217,13 +1218,21 @@ public class StatusBar extends SystemUI implements DemoMode,
                         mBrightnessMirrorVisible = visible;
                         updateScrimController();
                     });
+            mQuickBrightnessMirrorController = new BrightnessMirrorController(
+                    mNotificationShadeWindowView,
+                    mNotificationPanelViewController,
+                    mNotificationShadeDepthControllerLazy.get(),
+                    (visible) -> {
+                        mBrightnessMirrorVisible = visible;
+                        updateScrimController();
+                    });
             fragmentHostManager.addTagListener(QS.TAG, (tag, f) -> {
                 QS qs = (QS) f;
                 if (qs instanceof QSFragment) {
                     mQSBarHeader = ((QSFragment) qs).getHeader();
                     mQSPanel = ((QSFragment) qs).getQsPanel();
                     mQSPanel.setBrightnessMirror(mBrightnessMirrorController);
-                    ((QuickStatusBarHeader)qs.getHeader()).getHeaderQsPanel().setBrightnessMirror(mBrightnessMirrorController);
+                    ((QuickStatusBarHeader)qs.getHeader()).getHeaderQsPanel().setBrightnessMirror(mQuickBrightnessMirrorController);
                 }
             });
         }
@@ -1428,6 +1437,9 @@ public class StatusBar extends SystemUI implements DemoMode,
         if (mBrightnessMirrorController != null) {
             mBrightnessMirrorController.onDensityOrFontScaleChanged();
         }
+        if (mQuickBrightnessMirrorController != null) {
+            mQuickBrightnessMirrorController.onDensityOrFontScaleChanged();
+        }
         // TODO: Bring these out of StatusBar.
         mUserInfoControllerImpl.onDensityOrFontScaleChanged();
         mUserSwitcherController.onDensityOrFontScaleChanged();
@@ -1454,6 +1466,9 @@ public class StatusBar extends SystemUI implements DemoMode,
         if (mBrightnessMirrorController != null) {
             mBrightnessMirrorController.onOverlayChanged();
         }
+        if (mQuickBrightnessMirrorController != null) {
+            mQuickBrightnessMirrorController.onOverlayChanged();
+        }
         // We need the new R.id.keyguard_indication_area before recreating
         // mKeyguardIndicationController
         mNotificationPanelViewController.onThemeChanged();
@@ -1464,6 +1479,9 @@ public class StatusBar extends SystemUI implements DemoMode,
     public void onUiModeChanged() {
         if (mBrightnessMirrorController != null) {
             mBrightnessMirrorController.onUiModeChanged();
+        }
+        if (mQuickBrightnessMirrorController != null) {
+            mQuickBrightnessMirrorController.onUiModeChanged();
         }
     }
 
@@ -3123,6 +3141,9 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
         if (mBrightnessMirrorController != null) {
             mBrightnessMirrorController.updateResources();
+        }
+        if (mQuickBrightnessMirrorController != null) {
+            mQuickBrightnessMirrorController.updateResources();
         }
     }
 

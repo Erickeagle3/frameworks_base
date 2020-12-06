@@ -33,8 +33,11 @@ public class PixelPropsUtils {
     private static final String[] packagesToChange = {
             "com.google.android.apps.safetyhub",
             "com.google.android.apps.turbo",
-            "com.google.android.apps.maps",
-            "com.google.android.gms"
+            "com.google.android.apps.wellbeing",
+            "com.google.android.gms",
+            "com.google.android.inputmethod.latin",
+            "com.google.android.apps.photos",
+            "com.google.android.apps.maps"
     };
 
     static {

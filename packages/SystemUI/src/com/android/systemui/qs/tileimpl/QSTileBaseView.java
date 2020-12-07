@@ -161,21 +161,6 @@ public class QSTileBaseView extends com.android.systemui.plugins.qs.QSTileView {
                 mBg.setLayoutParams(lp);
             }
         } else {
-            // Let's ask if useMasksForQs is disabled and config_useImageMasksForQs is enabled
-            if (context.getResources().getBoolean(R.bool.config_useImageMasksForQs)) {
-                Drawable backgroundDrawable = context.getResources().getDrawable(R.drawable.ic_qs_circle_background);
-                Drawable foregroundDrawable = context.getResources().getDrawable(R.drawable.ic_qs_circle_foreground);
-                backgroundDrawable.setTintList(ColorStateList.valueOf(mColorDisabled));
-                mMaskBg.setImageDrawable(backgroundDrawable);
-                mMaskFg.setAlpha(0f);
-                mMaskFg.setVisibility(View.GONE);
-                mMaskFg.setImageDrawable(foregroundDrawable);
-                mIconFrame.addView(mMaskBg, lp);
-                mIconFrame.addView(mMaskFg, lp);
-                mMaskBg.setLayoutParams(lp);
-                mMaskFg.setLayoutParams(lp);
-
-            } else {
                 mBg.setImageResource(R.drawable.ic_qs_circle);
                 mIconFrame.addView(mBg);
             }
@@ -203,10 +188,7 @@ public class QSTileBaseView extends com.android.systemui.plugins.qs.QSTileView {
     }
 
     public View getBgCircle() {
-        boolean enforceDualBg = (getContext().getResources().getBoolean(R.bool.config_useMaskForQs) && 
-            getContext().getResources().getBoolean(R.bool.config_useGradientForQs)) || 
-            (!getContext().getResources().getBoolean(R.bool.config_useMaskForQs) && 
-            getContext().getResources().getBoolean(R.bool.config_useImageMasksForQs));
+        boolean enforceDualBg = (getContext().getResources().getBoolean(R.bool.config_useGradientForQs));
         return enforceDualBg ? mMaskBg : mBg;
     }
 
@@ -301,10 +283,7 @@ public class QSTileBaseView extends com.android.systemui.plugins.qs.QSTileView {
 
     protected void handleStateChanged(QSTile.State state) {
         boolean allowAnimations = animationsEnabled();
-        boolean enforceDualBg = (getContext().getResources().getBoolean(R.bool.config_useMaskForQs) && 
-            getContext().getResources().getBoolean(R.bool.config_useGradientForQs)) || 
-            (!getContext().getResources().getBoolean(R.bool.config_useMaskForQs) && 
-            getContext().getResources().getBoolean(R.bool.config_useImageMasksForQs));
+        boolean enforceDualBg = (getContext().getResources().getBoolean(R.bool.config_useGradientForQs));
         if (enforceDualBg) {
             int newTileState = state.state;
             if (newTileState != mState) {
